@@ -4,7 +4,7 @@ import { useState } from 'react';
 // Import Pages
 import Home from './pages/Home';
 import LayoutSelection from './pages/LayoutSelection';
-// import Capture from './pages/Capture';
+import Capture from './pages/Capture';
 // import Preview from './pages/Preview';
 // import Output from './pages/Output';
 
@@ -25,8 +25,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/layout" element={<LayoutSelection />} />
-            {/* <Route path="/capture" element={<Capture setPhotoData={setPhotoData} />} />
-            <Route path="/preview" element={<Preview photoData={photoData} setFinalImage={setFinalImage} />} />
+            <Route path="/capture" element={<Capture setPhotoData={setPhotoData} />} />
+            {/* <Route path="/preview" element={<Preview photoData={photoData} setFinalImage={setFinalImage} />} />
             <Route path="/output" element={<Output finalImage={finalImage} />} /> */}
           </Routes>
         </div>
