@@ -23,6 +23,7 @@ Snaptify is a web-based photobooth application that merges visual memories with 
 ### **Frontend (View)**
 
 * **React (Vite):** Fast, modern UI framework.
+* **Tailwind CSS:** Utility-first CSS framework for rapid UI development.
 * **React Router:** For multi-page navigation (Home → Capture → Preview → Output).
 * **React Webcam:** Handling media stream inputs.
 * **HTML-to-Image:** Rendering the DOM node (photo + frame + code) into a downloadable image.
