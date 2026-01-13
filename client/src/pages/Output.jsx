@@ -161,7 +161,7 @@ export default function Output() {
         <button 
           onClick={handleSave}
           disabled={isDownloading}
-          className="px-8 py-3 rounded-full bg-black text-white font-button font-semibold shadow-xl hover:bg-gray-900 transition-all transform hover:scale-105 disabled:opacity-70 disabled:cursor-wait"
+          className="px-8 py-3 rounded-full bg-black text-white font-button font-semibold shadow-xl transition-all transform hover:scale-105 disabled:opacity-70 disabled:cursor-wait"
         >
           {isDownloading ? 'Saving...' : 'Save'}
         </button>

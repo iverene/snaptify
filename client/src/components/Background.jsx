@@ -29,7 +29,7 @@ export default function Background() {
   }, []);
 
   return (
-    <div className={`fixed inset-0 w-full h-full overflow-hidden -z-10 pointer-events-none bg-lightWhite transition-opacity duration-1000 ${loaded ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`fixed inset-0 w-full h-full overflow-hidden -z-10 pointer-events-none bg-lightWhite `}>
       
       {/* Fixed Position Icons */}
       {iconData.map((icon, index) => (
