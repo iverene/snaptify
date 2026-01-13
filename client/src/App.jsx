@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import LayoutSelection from './pages/LayoutSelection';
 import Capture from './pages/Capture';
 import Preview from './pages/Preview';
-// import Output from './pages/Output';
+import Output from './pages/Output';
 
 import Background from './components/Background';
 
@@ -27,7 +27,7 @@ function App() {
             <Route path="/layout" element={<LayoutSelection />} />
             <Route path="/capture" element={<Capture setPhotoData={setPhotoData} />} />
             <Route path="/preview" element={<Preview photoData={photoData} setFinalImage={setFinalImage} />} />
-            {/* <Route path="/output" element={<Output finalImage={finalImage} />} /> */}
+            <Route path="/output" element={<Output finalImage={finalImage} />} />
           </Routes>
         </div>
       </div>
