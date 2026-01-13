@@ -95,14 +95,14 @@ export default function LayoutSelection() {
                 
                 {/* STYLE: POLAROID */}
                 {option.type === 'polaroid' && (
-                  <div className="bg-white p-2 pb-8 w-20 md:w-28 flex flex-col items-center">
+                  <div className="bg-white p-2 pt-6 pb-8 w-20 md:w-28 flex flex-col items-center">
                     <div className="w-full aspect-square bg-gray-200 border border-gray-300"></div>
                   </div>
                 )}
 
                 {/* STYLE: STRIP */}
                 {option.type === 'strip' && (
-                  <div className="bg-white p-1.5 pb-8 w-14 md:w-20 flex flex-col gap-1.5">
+                  <div className="bg-white p-1.5 pt-6 pb-8 w-14 md:w-20 flex flex-col gap-1.5">
                     {[...Array(option.count)].map((_, i) => (
                       <div key={i} className="w-full aspect-4/3 bg-gray-200 border border-gray-300"></div>
                     ))}
@@ -111,7 +111,7 @@ export default function LayoutSelection() {
 
                 {/* GRID 2x2 */}
                 {option.type === 'grid' && (
-                  <div className="bg-white p-1.5 pb-8 w-20 md:w-28">
+                  <div className="bg-white p-1.5 pt-6 pb-8 w-20 md:w-28">
                     <div className="grid grid-cols-2 gap-1.5">
                       {[...Array(4)].map((_, i) => (
                         <div key={i} className="w-full aspect-square bg-gray-200 border border-gray-300"></div>
@@ -122,7 +122,7 @@ export default function LayoutSelection() {
 
                 {/* GRID 2x3 */}
                 {option.type === 'grid-2x3' && (
-                  <div className="bg-white p-1.5 pb-8 w-24 md:w-32">
+                  <div className="bg-white p-1.5 pt-6 pb-8 w-24 md:w-32">
                     <div className="grid grid-cols-2 gap-1">
                       {[...Array(6)].map((_, i) => (
                         <div key={i} className="w-full aspect-square bg-gray-200 border border-gray-300"></div>
