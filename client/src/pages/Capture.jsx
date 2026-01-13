@@ -185,7 +185,7 @@ export default function Capture() {
               </div>
             )}
 
-            {/* Camera Button (Now Inside) */}
+            {/* Camera Button */}
             <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30">
                <button 
                 onClick={startCaptureSequence}

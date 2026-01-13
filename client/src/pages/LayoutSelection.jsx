@@ -112,7 +112,7 @@ export default function LayoutSelection() {
                 {/* GRID 2x2 */}
                 {option.type === 'grid' && (
                   <div className="bg-white p-1.5 pt-6 pb-8 w-20 md:w-28">
-                    <div className="grid grid-cols-2 gap-1.5">
+                    <div className="grid grid-cols-2 gap-1">
                       {[...Array(4)].map((_, i) => (
                         <div key={i} className="w-full aspect-square bg-gray-200 border border-gray-300"></div>
                       ))}
