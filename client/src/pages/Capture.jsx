@@ -73,8 +73,8 @@ export default function Capture() {
   const getFilterStyle = () => {
     switch (filter) {
       case 'low-quality': return 'contrast-125 brightness-110 saturate-150 blur-[0.5px] sepia-[0.2]';
-      case 'bw': return 'grayscale brightness-110 contrast-110'; // Improved brightness
-      case 'sepia': return 'sepia-[.6] contrast-110 brightness-105'; // Added Sepia
+      case 'bw': return 'grayscale brightness-90 contrast-130'; 
+      case 'vintage': return 'sepia-[.8] contrast-120 brightness-90'; 
       default: return '';
     }
   };
@@ -90,7 +90,7 @@ export default function Capture() {
       
       // Apply filters for saved image
       if (filter === 'bw') context.filter = 'grayscale(100%) brightness(110%) contrast(110%)';
-      if (filter === 'sepia') context.filter = 'sepia(60%) contrast(110%) brightness(105%)';
+      if (filter === 'vintage') context.filter = 'sepia(60%) contrast(110%) brightness(105%)';
       if (filter === 'low-quality') context.filter = 'contrast(125%) brightness(110%) saturate(150%) blur(0.5px) sepia(20%)';
       
       context.translate(canvas.width, 0);
@@ -208,11 +208,11 @@ export default function Capture() {
           {/* Controls (Filters Only now) */}
           <div className="flex items-center justify-center w-full px-4">
             <div className="flex flex-wrap justify-center gap-3">
-              {['Default', 'Low Quality', 'Black and White', 'Sepia'].map((opt) => {
+              {['Default', 'Low Quality', 'Black and White', 'Vintage'].map((opt) => {
                  const val = opt === 'Default' ? 'none' 
                            : opt === 'Low Quality' ? 'low-quality' 
                            : opt === 'Black and White' ? 'bw'
-                           : 'sepia';
+                           : 'vintage';
                  return (
                    <button
                     key={opt}
