@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import Navbar from '../components/Navbar'; 
@@ -12,7 +12,7 @@ import spotifyCodeWhite from '../assets/spotify-code-white.png';
 export default function Output() {
   const navigate = useNavigate();
   const location = useLocation();
-  const printRef = useRef(null);
+  const printRef = useRef(null); 
   
   // Retrieve state passed from Preview.jsx
   const { photos, layout, frameColor, selectedSong } = location.state || { 
@@ -24,7 +24,7 @@ export default function Output() {
 
   const [isDownloading, setIsDownloading] = useState(false);
 
-  // Helper to determine grid class for the PHOTO CONTAINER based on layout
+  // Helper to determine grid class
   const getLayoutClass = () => {
     switch (layout) {
       case 'single': return 'grid-cols-1';
@@ -36,7 +36,7 @@ export default function Output() {
     }
   };
 
-  // Helper for Frame Dimensions based on layout
+  // Helper for Frame Dimensions
   const getFrameStyle = () => {
     if (layout.includes('strip')) {
       return { width: '300px', minHeight: '400px' };
@@ -44,16 +44,16 @@ export default function Output() {
     return { width: '400px', minHeight: '500px' };
   };
 
-  // 1. Handle Download Logic
+  // 1. Handle Download Logic 
   const handleSave = async () => {
     if (printRef.current) {
       setIsDownloading(true);
       try {
-        // Wait a moment for images to be fully ready if needed
+        // Capture the HIDDEN, Full-Scale element
         const canvas = await html2canvas(printRef.current, {
-          scale: 2, // Higher scale for better resolution
+          scale: 3, // High Resolution
           useCORS: true,
-          backgroundColor: null, // Transparent background if possible
+          backgroundColor: null, 
         });
         
         const link = document.createElement('a');
@@ -68,11 +68,53 @@ export default function Output() {
     }
   };
 
-  // 2. Handle Try Again (Navigation)
   const handleTryAgain = () => {
-    // Navigate back to layout selection to start over
     navigate('/layout');
   };
+
+    // Frame Content Component
+  const FrameContent = () => (
+    <>
+      {/* Logo */}
+      <div className="flex justify-center mb-4">
+        <img 
+          src={frameColor === 'white' ? logoDark : logoLight} 
+          alt="Brand Logo" 
+          className="w-30 object-contain"
+        />
+      </div>
+
+      {/* Photos */}
+      <div className={`grid w-full h-auto ${getLayoutClass()}`}>
+        {photos.map((photo, index) => (
+          <div 
+            key={index} 
+            className="aspect-video w-full overflow-hidden"
+            style={{ backgroundColor: '#e5e7eb' }}
+          >
+            <img src={photo} alt={`Snap ${index}`} className="w-full h-full object-cover" />
+          </div>
+        ))}
+      </div>
+
+      {/* Spotify Code & Song Info */}
+      <div className="mt-4 flex flex-col items-center gap-2">
+        <img 
+          src={frameColor === 'white' ? spotifyCodeBlack : spotifyCodeWhite} 
+          alt="Spotify Code" 
+          className="w-32 md:w-40"
+        />
+        {selectedSong && (
+          <p 
+            className="text-[9px] font-semibold uppercase tracking-widest text-center font-button"
+            style={{ color: frameColor === 'white' ? '#000000' : '#ffffff' }}
+          >
+            {selectedSong.title} - {selectedSong.artist}
+          </p>
+        )}
+      </div>
+    </>
+  );
 
   return (
     <div className="relative min-h-screen w-full flex flex-col items-center pt-20 pb-10 overflow-hidden">
@@ -86,7 +128,8 @@ export default function Output() {
         />
       </div>
 
-      {/* 2. Main Display Area (Cart + Output) */}
+
+      {/* VISIBLE UI */}
       <div className="relative w-full max-w-5xl flex flex-col items-center justify-center mb-5">
         
         {/* The Cart Background */}
@@ -98,59 +141,48 @@ export default function Output() {
             />
         </div>
 
-        {/* The Final Output Frame */}
+        {/* The Visible Frame */}
         <div className="absolute top-90 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pt-10">
-            
             <div 
-              ref={printRef}
-              className={`relative p-5 shadow-[0_20px_50px_rgba(0,0,0,0.3)] animate-fade-in
-                ${frameColor === 'white' ? 'bg-white' : 'bg-black'}
-              `}
+              className="relative p-5 shadow-[0_20px_50px_rgba(0,0,0,0.3)] animate-fade-in"
               style={{ 
                 ...getFrameStyle(),
                 transform: 'scale(0.65)', 
-                transformOrigin: 'top center'
+                transformOrigin: 'top center',
+                backgroundColor: frameColor === 'white' ? '#ffffff' : '#000000'
               }}
             >
-                {/* Logo */}
-                <div className="flex justify-center mb-4">
-                  <img 
-                    src={frameColor === 'white' ? logoDark : logoLight} 
-                    alt="Brand Logo" 
-                    className="w-30 object-contain opacity-90"
-                  />
-                </div>
-
-                {/* Photos */}
-                <div className={`grid w-full h-auto ${getLayoutClass()}`}>
-                  {photos.map((photo, index) => (
-                    <div key={index} className="aspect-video w-full overflow-hidden bg-gray-200">
-                      <img src={photo} alt={`Snap ${index}`} className="w-full h-full object-cover" />
-                    </div>
-                  ))}
-                </div>
-
-                {/* Spotify Code & Song Info */}
-                <div className="mt-4 flex flex-col items-center gap-2">
-                  <img 
-                    src={frameColor === 'white' ? spotifyCodeBlack : spotifyCodeWhite} 
-                    alt="Spotify Code" 
-                    className="w-32 md:w-40 opacity-80"
-                  />
-                  {selectedSong && (
-                    <p className={`text-[9px] font-semibold uppercase tracking-widest text-center font-button ${frameColor === 'white' ? 'text-black' : 'text-white'}`}>
-                      {selectedSong.title} - {selectedSong.artist}
-                    </p>
-                  )}
-                </div>
+               <FrameContent />
             </div>
-
         </div>
       </div>
 
-      {/* 3. Action Buttons */}
+      {/* HIDDEN PRINT AREA */}
+      <div 
+        style={{
+           position: 'fixed',
+           top: '-9999px',
+           left: '-9999px',
+           visibility: 'visible', 
+           pointerEvents: 'none'
+        }}
+      >
+        <div
+          ref={printRef}
+          id="print-target"
+          className="p-4" 
+          style={{ 
+            ...getFrameStyle(),
+            backgroundColor: frameColor === 'white' ? '#ffffff' : '#000000'
+          }}
+        >
+          <FrameContent />
+        </div>
+      </div>
+
+
+      {/* Action Buttons */}
       <div className="flex gap-6 mt-10 md:mt-2 z-20">
-        
         <button 
           onClick={handleTryAgain}
           className="px-8 py-2 rounded-full border-2 border-black bg-white text-black font-button font-semibold hover:bg-gray-100 transition-all transform hover:scale-105"
@@ -165,7 +197,6 @@ export default function Output() {
         >
           {isDownloading ? 'Saving...' : 'Save'}
         </button>
-
       </div>
 
     </div>

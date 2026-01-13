@@ -61,7 +61,7 @@ export default function Preview() {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col items-center pt-20 pb-10 overflow-hidden bg-lightWhite">
+    <div className="relative min-h-screen w-full flex flex-col items-center pt-20 pb-10 overflow-hidden ">
       <Navbar />
 
         {/* Preview Title Image */}
