@@ -35,6 +35,9 @@ export default function Capture() {
   const targetCount = getTargetCount();
   const isComplete = photos.length === targetCount;
 
+  // Helper to distinguish grid vs strip for styling
+  const isGrid = selectedLayoutId.includes('grid');
+
   // Determine CSS Grid columns for the PREVIEW area
   const getPreviewLayoutClass = () => {
     switch(selectedLayoutId) {
@@ -153,7 +156,7 @@ export default function Capture() {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col items-center pt-20 pb-10 overflow-hidden">
+    <div className="relative min-h-screen w-full flex flex-col items-center pt-10 pb-10 overflow-hidden">
       <Navbar />
 
       <canvas ref={canvasRef} className="hidden" />
@@ -207,7 +210,7 @@ export default function Capture() {
 
           {/* Controls (Filters Only now) */}
           <div className="flex items-center justify-center w-full px-4">
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className="flex flex-wrap justify-center gap-5">
               {['Default', 'Low Quality', 'Black and White', 'Vintage'].map((opt) => {
                  const val = opt === 'Default' ? 'none' 
                            : opt === 'Low Quality' ? 'low-quality' 
@@ -219,7 +222,7 @@ export default function Capture() {
                     onClick={() => setFilter(val)}
                     disabled={isCapturing}
                     className={`px-4 py-2 rounded-full border-2 font-button font-semibold transition-all shadow-sm
-                      ${filter === val ? 'bg-black text-white border-black' : 'bg-white text-black border-black hover:bg-gray-100'}
+                      ${filter === val ? 'bg-black text-white border-black hover:scale-105' : 'bg-white text-black border-black hover:scale-105'}
                     `}
                    >
                      {opt}
@@ -231,13 +234,15 @@ export default function Capture() {
         </div>
 
         {/* RIGHT SIDE: Preview Area */}
-        <div className="w-full md:w-1/3 flex flex-col gap-4 h-auto max-h-[80vh]">
+        <div className="w-full md:w-1/3 flex flex-col gap-4 h-auto max-h-[90vh]">
 
           <div className={`grid gap-2 w-full overflow-y-auto p-1 ${getPreviewLayoutClass()}`}>
              {[...Array(targetCount)].map((_, i) => (
                 <div 
                   key={i} 
-                  className="aspect-video w-full bg-[#f0f0f0] rounded-md border border-black overflow-hidden flex items-center justify-center shadow-sm"
+                  className={`aspect-video bg-[#f0f0f0] rounded-md border border-black overflow-hidden flex items-center justify-center shadow-sm
+                    ${isGrid ? 'w-full' : 'w-2/3 mx-auto'} 
+                  `}
                 >
                   {photos[i] ? (
                     <img src={photos[i]} alt={`Shot ${i+1}`} className="w-full h-full object-cover" />
@@ -256,7 +261,7 @@ export default function Capture() {
             {photos.length > 0 && !isCapturing && (
               <button
                 onClick={handleRetake}
-                className="w-full py-2 bg-white text-black border-2 font-button font-bold text-sm rounded-lg hover:bg-black hover:text-white transition-all"
+                className="w-full py-2 bg-white text-black border-2 font-button font-bold text-sm rounded-lg hover:scale-105 transition-all"
               >
                 Retake
               </button>
@@ -286,8 +291,8 @@ export default function Capture() {
           ></div>
 
           {/* Modal Content */}
-          <div className="relative bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center transform transition-all scale-100 animate-fade-in-up">
-            <h3 className="text-2xl font-bold mb-2 font-display">Retake Photos?</h3>
+          <div className="relative bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center transform transition-all scale-100">
+            <h3 className="text-2xl text-black font-body font-semibold mb-2 font-display">Retake Photos?</h3>
             <p className="text-black mb-8 font-body">
               This will delete all your current shots. Are you sure you want to start over?
             </p>
