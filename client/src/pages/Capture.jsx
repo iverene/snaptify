@@ -47,16 +47,16 @@ export default function Capture() {
     }
   };
 
-  // Initialize Camera on Mount
+  // Initialize Camera on Mount (With Fix for Cleanup)
   useEffect(() => {
-    let mediaStream = null; // 1. Create a local variable to track the stream
+    let mediaStream = null;
 
     async function setupCamera() {
       try {
         mediaStream = await navigator.mediaDevices.getUserMedia({ 
           video: { facingMode: "user", width: 1280, height: 720 } 
         });
-        setStream(mediaStream); // Update state for UI
+        setStream(mediaStream);
         if (videoRef.current) {
           videoRef.current.srcObject = mediaStream;
         }
@@ -67,7 +67,7 @@ export default function Capture() {
     }
     setupCamera();
 
-    // 2. Cleanup Function: Stops the stream when component unmounts
+    // Cleanup: Stop camera tracks when unmounting/navigating away
     return () => {
       if (mediaStream) {
         mediaStream.getTracks().forEach(track => track.stop());
@@ -83,6 +83,15 @@ export default function Capture() {
       case 'vintage': return 'sepia-[.8] contrast-120 brightness-90'; 
       default: return '';
     }
+  };
+
+  // Sound Effect Helper
+  const playShutterSound = () => {
+    // Using a reliable external sound for demo. 
+    // You can download this file to your 'public' folder and change the URL to '/shutter.mp3'
+    const audio = new Audio('https://www.soundjay.com/mechanical/camera-shutter-click-08.mp3');
+    audio.volume = 0.6;
+    audio.play().catch(e => console.warn("Audio play blocked", e));
   };
 
   // Capture Logic (Canvas Processing)
@@ -105,7 +114,9 @@ export default function Capture() {
       
       const imageUrl = canvas.toDataURL('image/png');
       
+      // Effects
       setFlash(true);
+      playShutterSound(); // Play Sound
       setTimeout(() => setFlash(false), 100);
 
       return imageUrl;
@@ -243,6 +254,7 @@ export default function Capture() {
              {[...Array(targetCount)].map((_, i) => (
                 <div 
                   key={i} 
+                  // If Grid: Full width. If Strip: Smaller width (2/3) and centered
                   className={`aspect-video bg-[#f0f0f0] rounded-md border border-black overflow-hidden flex items-center justify-center shadow-sm
                     ${isGrid ? 'w-full' : 'w-2/3 mx-auto'} 
                   `}
