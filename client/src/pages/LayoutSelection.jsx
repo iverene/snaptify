@@ -38,14 +38,14 @@ export default function LayoutSelection() {
       type: 'grid', 
       label: '2x2 Grid', 
       rotate: 'rotate-8', 
-      position: 'bottom-[10%] left-[25%]' 
+      position: 'bottom-[20%] left-[25%]' 
     },
     { 
       id: 'grid-2x3', 
       type: 'grid-2x3', 
       label: '2x3 Grid', 
       rotate: '-rotate-3', 
-      position: 'bottom-[7%] right-[23%]' 
+      position: 'bottom-[10%] right-[24%]' 
     },
   ];
 
@@ -58,29 +58,29 @@ export default function LayoutSelection() {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col items-center pt-15 pb-5">
+    <div className="relative min-h-screen w-full flex flex-col items-center pt-20 pb-5">
       <Navbar />
 
       {/* 1. Header Image */}
-      <div className="mb-4 animate-fade-in-down">
+      <div className="mb-4 animate-fade-in-down px-4">
         <img 
           src={layoutTitle} 
           alt="Choose a layout" 
-          className="h-10 md:h-16 object-contain"
+          className="h-10 md:h-14 lg:h-16 object-contain"
         />
       </div>
 
       {/* 2. Corkboard Container */}
-      <div className="relative w-[80%] md:w-[45%] max-w-5xl shadow-2xl">
+      {/* Increased width on mobile (w-[95%]) to ensure buttons fit */}
+      <div className="relative w-[95%] sm:w-[85%] md:w-[60%] lg:w-[45%] max-w-5xl shadow-2xl">
         
-        {/* Render the Corkboard Image directly to maintain aspect ratio */}
         <img 
           src={corkboardBg} 
           alt="Background" 
           className="w-full h-auto block rounded-sm"
         />
 
-        {/* Absolute Layer for Buttons */}
+        {/* Buttons Layer */}
         <div className="absolute inset-0 w-full h-full p-4">
           {layoutOptions.map((option) => (
             <button
@@ -90,19 +90,18 @@ export default function LayoutSelection() {
                 ${selectedLayout === option.id ? 'scale-110 z-20' : 'hover:z-10'}
               `}
             >
-              {/* Visual rendering of the layouts using CSS */}
               <div className={`shadow-xl transition-all ${selectedLayout === option.id ? 'ring-2 ring-black' : ''}`}>
                 
-                {/* STYLE: POLAROID */}
+                {/* POLAROID */}
                 {option.type === 'polaroid' && (
-                  <div className="bg-white p-2 pt-6 pb-8 w-20 md:w-28 flex flex-col items-center">
+                  <div className="bg-white p-2 pb-6 w-16 sm:w-20 md:w-28 flex flex-col items-center">
                     <div className="w-full aspect-square bg-gray-200 border border-gray-300"></div>
                   </div>
                 )}
 
-                {/* STYLE: STRIP */}
+                {/* STRIP */}
                 {option.type === 'strip' && (
-                  <div className="bg-white p-1.5 pt-6 pb-8 w-14 md:w-20 flex flex-col gap-1.5">
+                  <div className="bg-white p-1.5 pb-6 w-10 sm:w-14 md:w-20 flex flex-col gap-1.5">
                     {[...Array(option.count)].map((_, i) => (
                       <div key={i} className="w-full aspect-4/3 bg-gray-200 border border-gray-300"></div>
                     ))}
@@ -111,8 +110,8 @@ export default function LayoutSelection() {
 
                 {/* GRID 2x2 */}
                 {option.type === 'grid' && (
-                  <div className="bg-white p-1.5 pt-6 pb-8 w-20 md:w-28">
-                    <div className="grid grid-cols-2 gap-1">
+                  <div className="bg-white p-1.5 pb-6 w-16 sm:w-20 md:w-28">
+                    <div className="grid grid-cols-2 gap-1.5">
                       {[...Array(4)].map((_, i) => (
                         <div key={i} className="w-full aspect-square bg-gray-200 border border-gray-300"></div>
                       ))}
@@ -122,7 +121,7 @@ export default function LayoutSelection() {
 
                 {/* GRID 2x3 */}
                 {option.type === 'grid-2x3' && (
-                  <div className="bg-white p-1.5 pt-6 pb-8 w-24 md:w-32">
+                  <div className="bg-white p-1.5 pb-6 w-20 sm:w-24 md:w-32">
                     <div className="grid grid-cols-2 gap-1">
                       {[...Array(6)].map((_, i) => (
                         <div key={i} className="w-full aspect-square bg-gray-200 border border-gray-300"></div>
@@ -151,7 +150,7 @@ export default function LayoutSelection() {
           disabled={!selectedLayout}
           className={`px-10 py-3 rounded-full font-bold text-lg shadow-xl transition-all transform 
             ${selectedLayout 
-              ? 'bg-black text-white hover:scale-105 hover:bg-gray-900 cursor-pointer' 
+              ? 'bg-black text-white hover:scale-105 cursor-pointer' 
               : 'bg-gray-400 text-gray-500 cursor-not-allowed'}
           `}
         >

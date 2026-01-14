@@ -12,19 +12,14 @@ import spotifyCodeWhite from '../assets/spotify-code-white.png';
 export default function Output() {
   const navigate = useNavigate();
   const location = useLocation();
-  const printRef = useRef(null); 
+  const printRef = useRef(null);
   
-  // Retrieve state passed from Preview.jsx
   const { photos, layout, frameColor, selectedSong } = location.state || { 
-    photos: [], 
-    layout: 'single', 
-    frameColor: 'white', 
-    selectedSong: null 
+    photos: [], layout: 'single', frameColor: 'white', selectedSong: null 
   };
 
   const [isDownloading, setIsDownloading] = useState(false);
 
-  // Helper to determine grid class
   const getLayoutClass = () => {
     switch (layout) {
       case 'single': return 'grid-cols-1';
@@ -36,33 +31,30 @@ export default function Output() {
     }
   };
 
-  // Helper for Frame Dimensions
   const getFrameStyle = () => {
     if (layout.includes('strip')) {
-      return { width: '300px', minHeight: '400px' };
+      return { width: '300px', minHeight: '600px' };
     }
     return { width: '400px', minHeight: '300px' };
   };
 
-  // 1. Handle Download Logic 
+  // Handle Download Logic (Full Size, Hidden Render)
   const handleSave = async () => {
     if (printRef.current) {
       setIsDownloading(true);
       try {
-        // Capture the HIDDEN, Full-Scale element
         const canvas = await html2canvas(printRef.current, {
-          scale: 3, // High Resolution
+          scale: 3, 
           useCORS: true,
           backgroundColor: null, 
         });
-        
         const link = document.createElement('a');
         link.download = `snaptify-${Date.now()}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
       } catch (error) {
         console.error("Download failed:", error);
-        alert("Failed to save image. Please try again.");
+        alert("Failed to save image.");
       }
       setIsDownloading(false);
     }
@@ -72,10 +64,9 @@ export default function Output() {
     navigate('/layout');
   };
 
-    // Frame Content Component
+  // Reusable Frame Content
   const FrameContent = () => (
     <>
-      {/* Logo */}
       <div className="flex justify-center mb-4">
         <img 
           src={frameColor === 'white' ? logoDark : logoLight} 
@@ -83,21 +74,13 @@ export default function Output() {
           className="w-30 object-contain"
         />
       </div>
-
-      {/* Photos */}
       <div className={`grid w-full h-auto ${getLayoutClass()}`}>
         {photos.map((photo, index) => (
-          <div 
-            key={index} 
-            className="aspect-video w-full overflow-hidden"
-            style={{ backgroundColor: '#e5e7eb' }}
-          >
+          <div key={index} className="aspect-video w-full overflow-hidden" style={{ backgroundColor: '#e5e7eb' }}>
             <img src={photo} alt={`Snap ${index}`} className="w-full h-full object-cover" />
           </div>
         ))}
       </div>
-
-      {/* Spotify Code & Song Info */}
       <div className="mt-4 flex flex-col items-center gap-2">
         <img 
           src={frameColor === 'white' ? spotifyCodeBlack : spotifyCodeWhite} 
@@ -112,34 +95,28 @@ export default function Output() {
     <div className="relative min-h-screen w-full flex flex-col items-center pt-20 pb-10 overflow-hidden">
       <Navbar />
 
-      <div className="w-full flex items-center justify-center mb-4 animate-fade-in-down">
-        <img 
-          src={outputTitle} 
-          alt="Your Snaptify is Ready" 
-          className="h-10 md:h-16 object-contain" 
-        />
+      <div className="w-full flex items-center justify-center mb-4 animate-fade-in-down px-4">
+        <img src={outputTitle} alt="Your Snaptify is Ready" className="h-8 sm:h-10 md:h-16 object-contain" />
       </div>
 
-
-      {/* VISIBLE UI */}
-      <div className="relative w-full max-w-5xl flex flex-col items-center justify-center mb-5">
+      {/* 2. Main Display Area */}
+      <div className="relative w-full max-w-5xl flex flex-col items-center justify-center mb-5 px-4">
         
-        {/* The Cart Background */}
+        {/* Cart Background - Responsive Width */}
         <div className="relative z-0 flex items-center justify-center">
             <img 
               src={cartBg} 
               alt="Cart" 
-              className="w-75 md:w-100 object-contain opacity-90"
+              className="w-[280px] sm:w-[350px] md:w-[400px] object-contain opacity-90"
             />
         </div>
 
-        {/* The Visible Frame */}
-        <div className="absolute top-90 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pt-10">
+        {/* The Visible Frame - Positioned inside the cart */}
+        <div className="absolute top-[60%] sm:top-[75%] md:top-[70%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pt-10 w-full flex justify-center">
             <div 
-              className="relative p-5 shadow-[0_20px_50px_rgba(0,0,0,0.3)] animate-fade-in"
+              className="relative p-5 shadow-[0_20px_50px_rgba(0,0,0,0.3)] animate-fade-in scale-[0.55] sm:scale-[0.65]"
               style={{ 
                 ...getFrameStyle(),
-                transform: 'scale(0.65)', 
                 transformOrigin: 'top center',
                 backgroundColor: frameColor === 'white' ? '#ffffff' : '#000000'
               }}
@@ -149,31 +126,7 @@ export default function Output() {
         </div>
       </div>
 
-      {/* HIDDEN PRINT AREA */}
-      <div 
-        style={{
-           position: 'fixed',
-           top: '-9999px',
-           left: '-9999px',
-           visibility: 'visible', 
-           pointerEvents: 'none'
-        }}
-      >
-        <div
-          ref={printRef}
-          id="print-target"
-          className="p-3" 
-          style={{ 
-            ...getFrameStyle(),
-            backgroundColor: frameColor === 'white' ? '#ffffff' : '#000000'
-          }}
-        >
-          <FrameContent />
-        </div>
-      </div>
-
-
-      {/* Action Buttons */}
+      {/* 3. Action Buttons */}
       <div className="flex gap-6 mt-10 md:mt-2 z-20">
         <button 
           onClick={handleTryAgain}
@@ -181,7 +134,6 @@ export default function Output() {
         >
           Snap Again
         </button>
-
         <button 
           onClick={handleSave}
           disabled={isDownloading}
@@ -189,6 +141,21 @@ export default function Output() {
         >
           {isDownloading ? 'Saving...' : 'Save'}
         </button>
+      </div>
+
+      {/* Hidden Print Area */}
+      <div style={{ position: 'fixed', top: '-9999px', left: '-9999px', visibility: 'visible', pointerEvents: 'none' }}>
+        <div
+          ref={printRef}
+          id="print-target"
+          className="p-5"
+          style={{ 
+            ...getFrameStyle(),
+            backgroundColor: frameColor === 'white' ? '#ffffff' : '#000000'
+          }}
+        >
+          <FrameContent />
+        </div>
       </div>
 
     </div>

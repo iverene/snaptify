@@ -1,49 +1,35 @@
-import { useNavigate } from 'react-router-dom'; 
-import { useEffect, useState } from 'react';
-import logo from '../assets/logo.png'; 
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import Background from '../components/Background';
+import titleImg from '../assets/title.png'; 
 
 export default function Home() {
   const navigate = useNavigate();
-  const [isVisible, setIsVisible] = useState(false); 
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
-  const handleStart = () => {
-    navigate('/layout');
-  };
 
   return (
-    <section className="relative w-full h-screen flex flex-col items-center justify-center z-10 px-4">
-      
-      {/* Logo Section */}
-      <div className={`transition-all duration-1000 ease-out transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+    <div className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+      <Background />
+      <Navbar />
+
+      <div className="z-10 flex flex-col items-center gap-6 md:gap-8 animate-fade-in-down w-full px-4">
+        
+        {/* Responsive Title Image */}
         <img 
-          src={logo} 
-          alt="Brand Logo" 
-          className="w-80 md:w-100 h-auto object-contain" 
+          src={titleImg} 
+          alt="Snaptify" 
+          className="w-[85%] sm:w-[60%] md:w-[50%] lg:w-[35%] object-contain drop-shadow-2xl"
         />
+
+        {/* Responsive Button */}
+        <button 
+          onClick={() => navigate('/layout')}
+          className="px-8 py-3 text-lg md:px-12 md:py-4 md:text-2xl font-bold text-white bg-black rounded-full shadow-2xl hover:scale-105 hover:bg-gray-900 transition-transform duration-300 ease-out cursor-pointer font-button"
+        >
+          Let's Start
+        </button>
+        
       </div>
-
-      {/* Description Section */}
-      <div className={`text-center space-y-5 max-w-2xl mb-10 transition-all duration-1000 delay-300 ease-out transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <p className="text-lg md:text-xl font-body text-black">
-           is the ultimate Gen-Z photobooth experience that combines creativity, music, and memories in one seamless platform. Personalize each shot by searching for your favorite song, which automatically generates a scannable Spotify code embedded into the photo.
-        </p>
-        <p className="text-lg md:text-xl font-body text-black">
-          Share your moments instantly with friends, keep them as digital keepsakes, or let your photos tell a story paired with music.
-        </p>
-      </div>
-
-      {/* CTA Button */}
-      <button 
-        onClick={handleStart}
-        className={`px-8 py-3 bg-black text-white font-button font-semibold rounded-full shadow-lg hover:bg-black transition-all duration-1000 delay-500 ease-out transform hover:scale-105 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-      >
-        Snap Now
-      </button>
-
-    </section>
+    </div>
   );
 }
