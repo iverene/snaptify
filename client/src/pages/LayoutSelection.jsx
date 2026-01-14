@@ -38,7 +38,7 @@ export default function LayoutSelection() {
       type: 'grid', 
       label: '2x2 Grid', 
       rotate: 'rotate-8', 
-      position: 'bottom-[15%] left-[27%]' 
+      position: 'bottom-[13%] left-[25%]' 
     },
     { 
       id: 'grid-2x3', 
