@@ -38,14 +38,14 @@ export default function LayoutSelection() {
       type: 'grid', 
       label: '2x2 Grid', 
       rotate: 'rotate-8', 
-      position: 'bottom-[20%] left-[27%]' 
+      position: 'bottom-[18%] left-[27%]' 
     },
     { 
       id: 'grid-2x3', 
       type: 'grid-2x3', 
       label: '2x3 Grid', 
       rotate: '-rotate-3', 
-      position: 'bottom-[10%] right-[25%]' 
+      position: 'bottom-[8%] right-[24%]' 
     },
   ];
 
