@@ -41,7 +41,7 @@ export default function Output() {
     if (layout.includes('strip')) {
       return { width: '300px', minHeight: '400px' };
     }
-    return { width: '400px', minHeight: '500px' };
+    return { width: '400px', minHeight: '300px' };
   };
 
   // 1. Handle Download Logic 
@@ -170,7 +170,7 @@ export default function Output() {
         <div
           ref={printRef}
           id="print-target"
-          className="p-4" 
+          className="p-3" 
           style={{ 
             ...getFrameStyle(),
             backgroundColor: frameColor === 'white' ? '#ffffff' : '#000000'

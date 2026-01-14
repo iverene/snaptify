@@ -82,7 +82,7 @@ export default function Preview() {
             style={{ 
               // Approximate aspect ratios for the frame container
               width: layout.includes('strip') ? '300px' : '400px',
-              minHeight: layout.includes('strip') ? '600px' : '500px' 
+              minHeight: layout.includes('strip') ? '600px' : '300px' 
             }}
           >
             {/* 1. Logo at Top */}
