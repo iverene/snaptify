@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import previewText from '../assets/preview.png'; 
@@ -7,7 +7,6 @@ import logoLight from '../assets/logo-white.png';
 import spotifyCodeBlack from '../assets/spotify-code-black.png'; 
 import spotifyCodeWhite from '../assets/spotify-code-white.png'; 
 
-// Mock Data for Spotify Search
 const MOCK_SONGS = [
   { id: 1, title: "Espresso", artist: "Sabrina Carpenter", cover: "https://i.scdn.co/image/ab67616d0000b273659cd4673230913b3918e316" },
   { id: 2, title: "Birds of a Feather", artist: "Billie Eilish", cover: "https://i.scdn.co/image/ab67616d0000b27371d62ea7ea8a5be92d3c1f62" },
@@ -19,16 +18,12 @@ const MOCK_SONGS = [
 export default function Preview() {
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // Retrieve state passed from Capture.jsx
   const { photos, layout } = location.state || { photos: [], layout: 'single' };
 
-  // UI State
-  const [frameColor, setFrameColor] = useState('white'); // 'white' or 'black'
+  const [frameColor, setFrameColor] = useState('white'); 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSong, setSelectedSong] = useState(null);
 
-  // Helper to determine grid class for the PHOTO CONTAINER based on layout
   const getLayoutClass = () => {
     switch (layout) {
       case 'single': return 'grid-cols-1';
@@ -40,7 +35,6 @@ export default function Preview() {
     }
   };
 
-  // Filter songs based on search
   const filteredSongs = searchQuery 
     ? MOCK_SONGS.filter(s => 
         s.title.toLowerCase().startsWith(searchQuery.toLowerCase()) || 
@@ -49,43 +43,33 @@ export default function Preview() {
     : [];
 
   const handleSave = () => {
-    // Navigate to Output page with final data
-    navigate('/output', { 
-      state: { 
-        photos, 
-        layout, 
-        frameColor, 
-        selectedSong 
-      } 
-    });
+    navigate('/output', { state: { photos, layout, frameColor, selectedSong } });
   };
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col items-center pt-20 pb-10 overflow-hidden ">
+    <div className="relative min-h-screen w-full flex flex-col items-center pt-20 pb-10 overflow-hidden">
       <Navbar />
 
-        {/* Preview Title Image */}
-        <div className="w-full flex items-center justify-center mb-5">
-            <img src={previewText} alt="Preview" className="h-10 md:h-16 object-contain" />
-        </div>
-        
-        <div className="flex flex-col md:flex-row w-full max-w-7xl px-4 gap-8 md:gap-16 justify-center items-start">
-        
+      <div className="w-full flex items-center justify-center mb-5">
+          <img src={previewText} alt="Preview" className="h-10 md:h-16 object-contain" />
+      </div>
+      
+      {/* Responsive Layout: Column on mobile/tablet, Row on Large screens */}
+      <div className="flex flex-col lg:flex-row w-full max-w-7xl px-4 gap-8 lg:gap-16 justify-center items-center lg:items-start">
+      
         {/* ================= LEFT SIDE: FRAME PREVIEW ================= */}
-        <div className="flex flex-col items-center gap-6 animate-fade-in-up">
+        <div className="flex flex-col items-center gap-6 animate-fade-in-up w-full">
           
-          {/* THE FRAME */}
           <div 
-            className={`relative p-6 shadow-2xl transition-colors duration-500 ease-in-out
+            className={`relative p-6 shadow-2xl transition-colors duration-500 ease-in-out mx-auto
               ${frameColor === 'white' ? 'bg-white' : 'bg-black'}
             `}
             style={{ 
-              // Approximate aspect ratios for the frame container
-              width: layout.includes('strip') ? '300px' : '400px',
+              width: '100%',
+              maxWidth: layout.includes('strip') ? '300px' : '400px',
               minHeight: layout.includes('strip') ? '600px' : '300px' 
             }}
           >
-            {/* 1. Logo at Top */}
             <div className="flex justify-center mb-4">
               <img 
                 src={frameColor === 'white' ? logoDark : logoLight} 
@@ -94,7 +78,6 @@ export default function Preview() {
               />
             </div>
 
-            {/* 2. Photo Grid */}
             <div className={`grid w-full h-auto ${getLayoutClass()}`}>
               {photos.map((photo, index) => (
                 <div key={index} className="aspect-video w-full overflow-hidden bg-gray-200">
@@ -103,7 +86,6 @@ export default function Preview() {
               ))}
             </div>
 
-            {/* 3. Spotify Code at Bottom */}
             <div className="mt-6 flex flex-col items-center gap-2">
               <img 
                 src={frameColor === 'white' ? spotifyCodeBlack : spotifyCodeWhite} 
@@ -113,7 +95,6 @@ export default function Preview() {
             </div>
           </div>
 
-          {/* Color Controls */}
           <div className="flex gap-6 mt-4">
             <button 
               onClick={() => setFrameColor('white')}
@@ -132,12 +113,9 @@ export default function Preview() {
           </div>
         </div>
 
-
         {/* ================= RIGHT SIDE: SEARCH & ACTIONS ================= */}
-        <div className="flex flex-col items-center md:items-start w-full md:w-1/3 gap-8 pt-10 animate-fade-in-up delay-100">
+        <div className="flex flex-col items-center lg:items-start w-full lg:w-1/2 gap-8 pt-4 lg:pt-10 animate-fade-in-up delay-100">
           
-          
-          {/* Spotify Search Section */}
           <div className="w-full bg-white/50 backdrop-blur-sm p-6 rounded-3xl border border-gray-200 shadow-sm">
             <div className="relative mb-4">
               <input
@@ -150,17 +128,13 @@ export default function Preview() {
               <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
 
-            {/* Results List */}
             <div className="max-h-75 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
               {searchQuery && filteredSongs.length === 0 && (
                 <p className="text-gray-500 font-body text-center py-4">No songs found.</p>
               )}
-              
               {!searchQuery && !selectedSong && (
                 <p className="text-gray-400 font-body text-sm text-center py-4">Type to search for music...</p>
               )}
-
-              {/* Render Filtered List */}
               {filteredSongs.map((song) => (
                 <div 
                   key={song.id}
@@ -176,8 +150,6 @@ export default function Preview() {
                   </div>
                 </div>
               ))}
-              
-              {/* If a song is selected but search is cleared, show selected at top */}
               {!searchQuery && selectedSong && (
                  <div className="bg-black text-white flex items-center gap-3 p-2 rounded-xl">
                     <img src={selectedSong.cover} alt={selectedSong.title} className="w-10 h-10 rounded-md" />
@@ -191,8 +163,7 @@ export default function Preview() {
             </div>
           </div>
 
-          {/* Save Button */}
-          <div className="w-full flex justify-center md:justify-end mt-4">
+          <div className="w-full flex justify-center lg:justify-end mt-4">
             <button 
               onClick={handleSave}
               className="px-8 py-2 bg-black text-white font-button font-bold rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition-all transform"
@@ -200,9 +171,7 @@ export default function Preview() {
               Save
             </button>
           </div>
-
         </div>
-
       </div>
     </div>
   );
