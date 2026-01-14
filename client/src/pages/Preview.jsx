@@ -110,12 +110,6 @@ export default function Preview() {
                 alt="Spotify Code" 
                 className="w-32 md:w-40 opacity-80"
               />
-              {/* Show song title if selected */}
-              {selectedSong && (
-                <p className={`text-[10px] font-semibold uppercase tracking-widest text-center font-button ${frameColor === 'white' ? 'text-black' : 'text-white'}`}>
-                  {selectedSong.title} - {selectedSong.artist}
-                </p>
-              )}
             </div>
           </div>
 

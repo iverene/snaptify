@@ -104,14 +104,6 @@ export default function Output() {
           alt="Spotify Code" 
           className="w-32 md:w-40"
         />
-        {selectedSong && (
-          <p 
-            className="text-[9px] font-semibold uppercase tracking-widest text-center font-button"
-            style={{ color: frameColor === 'white' ? '#000000' : '#ffffff' }}
-          >
-            {selectedSong.title} - {selectedSong.artist}
-          </p>
-        )}
       </div>
     </>
   );
